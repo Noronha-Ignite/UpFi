@@ -21,7 +21,11 @@ interface RequestResponse {
 async function getImages({
   pageParam = 0,
 }: GetImagesParams): Promise<RequestResponse> {
-  const response = await api.get(`/images?after=${pageParam}`);
+  const response = await api.get(`/api/images`, {
+    params: {
+      after: pageParam,
+    },
+  });
 
   return response.data;
 }
@@ -61,8 +65,9 @@ export default function Home(): JSX.Element {
 
         {hasNextPage && (
           <>
-            <Button onClick={() => fetchNextPage()}>Carregar mais</Button>
-            {isFetchingNextPage && <Spinner ml="4" />}
+            <Button onClick={() => fetchNextPage()}>
+              {isFetchingNextPage ? 'Carregando...' : 'Carregar mais'}
+            </Button>
           </>
         )}
       </Box>
